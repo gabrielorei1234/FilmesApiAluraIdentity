@@ -25,39 +25,36 @@ namespace FilmesAPI.Controllers
             _filmeService = filmeService;
         }
 
-
         [HttpPost]
         public IActionResult AdicionaFilme([FromBody] CreateFilmeDto filmeDto)
         {
-            ReadFilmeDto readFilmeDto = _filmeService.AdicionaFilme(filmeDto);           
-            return CreatedAtAction(nameof(RecuperaFilmesPorId), new { Id = readFilmeDto.Id }, readFilmeDto);
+            ReadFilmeDto readDto = _filmeService.AdicionaFilme(filmeDto);
+            return CreatedAtAction(nameof(RecuperaFilmesPorId), new { Id = readDto.Id }, readDto);
         }
 
         [HttpGet]
         public IActionResult RecuperaFilmes([FromQuery] int? classificacaoEtaria = null)
         {
-            List<ReadFilmeDto> readFilmeDtos = _filmeService.RecuperaFilmes(classificacaoEtaria);
-            if (readFilmeDtos != null) return Ok(readFilmeDtos);
-            return NotFound();
+            List<ReadFilmeDto> readDto = _filmeService.RecuperaFilmes(classificacaoEtaria);
+            if (readDto == null) return NotFound();
+            return Ok(readDto);
         }
 
         [HttpGet("{id}")]
         public IActionResult RecuperaFilmesPorId(int id)
         {
-
-            ReadFilmeDto readFilmeDto = _filmeService.RecuperaFilmesPorId(id);
-
-            if (readFilmeDto != null) return Ok(readFilmeDto);
-            return NotFound();
+            ReadFilmeDto readDto = _filmeService.RecuperaFilmesPorId(id);
+            if (readDto == null) return NotFound();
+            return Ok(readDto);
+            
         }
 
         [HttpPut("{id}")]
         public IActionResult AtualizaFilme(int id, [FromBody] UpdateFilmeDto filmeDto)
         {
-            Result resultado =  _filmeService.AtualizarFilme(id, filmeDto);
+            Result resultado = _filmeService.AtualizaFilme(id, filmeDto);
             if (resultado.IsFailed) return NotFound();
             return NoContent();
-            
         }
 
         [HttpDelete("{id}")]
@@ -66,7 +63,6 @@ namespace FilmesAPI.Controllers
             Result resultado = _filmeService.DeletaFilme(id);
             if (resultado.IsFailed) return NotFound();
             return NoContent();
-            
         }
 
     }

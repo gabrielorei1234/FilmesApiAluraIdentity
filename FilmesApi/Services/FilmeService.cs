@@ -6,6 +6,7 @@ using FluentResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace FilmesApi.Services
 {
@@ -25,7 +26,7 @@ namespace FilmesApi.Services
             Filme filme = _mapper.Map<Filme>(filmeDto);
             _context.Filmes.Add(filme);
             _context.SaveChanges();
-            return _mapper.Map<ReadFilmeDto>(filme);  
+            return _mapper.Map<ReadFilmeDto>(filme);
         }
 
         public List<ReadFilmeDto> RecuperaFilmes(int? classificacaoEtaria)
@@ -46,9 +47,7 @@ namespace FilmesApi.Services
                 List<ReadFilmeDto> readDto = _mapper.Map<List<ReadFilmeDto>>(filmes);
                 return readDto;
             }
-
             return null;
-
         }
 
         public ReadFilmeDto RecuperaFilmesPorId(int id)
@@ -63,7 +62,7 @@ namespace FilmesApi.Services
             return null;
         }
 
-        public  Result AtualizarFilme(int id, UpdateFilmeDto filmeDto)
+        public Result AtualizaFilme(int id, UpdateFilmeDto filmeDto)
         {
             Filme filme = _context.Filmes.FirstOrDefault(filme => filme.Id == id);
             if (filme == null)
@@ -72,12 +71,10 @@ namespace FilmesApi.Services
             }
             _mapper.Map(filmeDto, filme);
             _context.SaveChanges();
-
             return Result.Ok();
-
         }
 
-       public Result DeletaFilme(int id)
+        public Result DeletaFilme(int id)
         {
             Filme filme = _context.Filmes.FirstOrDefault(filme => filme.Id == id);
             if (filme == null)
